@@ -1,0 +1,13 @@
+!history.txt
+
+{{- if ne .chezmoi.os "windows" -}}
+Documents/*
+komorebi.*
+AppData/Roaming
+{{- end -}}
+
+{{- if ne .chezmoi.os "linux" -}}
+.config/hypr
+.config/mpv
+.config/nushell
+{{- end -}}
