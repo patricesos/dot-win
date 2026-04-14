@@ -2,9 +2,8 @@ if (!(Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE -Force
 }
 
-function em {
-  param($1)
-  emacsclient -c -n -a "" $1
+function emacs {
+  emacsclient -c -n -a "" $args
 }
 
 New-Alias vi nvim
@@ -14,6 +13,7 @@ function ll { eza -axl --icons=always --group-directories-first }
 
 hugo completion powershell | Out-String | Invoke-Expression
 function github { githubdesktop . }
+function lg { lazygit . }
 function pw { pwsh -nol }
 function ip { ipconfig }
 function moho {
@@ -38,28 +38,23 @@ function ex { explorer . }
 function ex. { explorer . }
 
 function audio {
-    param($link)
-    yt-dlp -o $env:userprofile/downloads/music/"%(title)s.%(ext)s" -x --audio-format mp3 $link
+    yt-dlp -o $env:userprofile/downloads/music/"%(title)s.%(ext)s" -x --audio-format mp3 $args
 }
 
 function hd {
-    param($link)
-    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "140+136" $link
+    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "140+136" $args -t mp4
 }
 
 function fhd {
-    param($link)
-    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "140+137" $link
+    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "140+137" $args -t mp4
 }
 
 function insta {
-    param($link)
-    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $link --cookies-from-browser firefox
+    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $args --cookies-from-browser firefox -t mp4
 }
 
 function video {
-    param($link)
-    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $link
+    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $args -t mp4
 }
 
 function global {
@@ -81,19 +76,19 @@ function bt {
     beet im $opt
 }
 
-# chezmoi aliases
+# Chezmoi aliases
 function ce { nvim ~/.local/share/chezmoi/}
 function cu { chezmoi update }
 function ca { chezmoi -v apply }
-function chcd { chezmoi cd }
+function ccd { chezmoi cd }
 
 
 # Docker
 function DockerComposeUp { docker compose up -d }
 function DockerComposeDown { docker compose down }
 function DockerComposeFile {
-    param($opt)
-    docker compose -f $opt up -d
+    param($file)
+    docker compose -f $file up -d
 }
 
 function GafferDebug {
