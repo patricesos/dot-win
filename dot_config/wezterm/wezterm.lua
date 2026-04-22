@@ -22,8 +22,8 @@ wezterm.on("gui-startup", function(cmd)
 	window:gui_window():maximize()
 end)
 
--- config.default_prog = { 'pwsh', '-nol' }
-config.default_prog = { "pwsh" }
+config.default_prog = { "pwsh", "-nol" }
+-- config.default_prog = { "pwsh" }
 -- config.win32_system_backdrop = "Acrylic"
 -- config.win32_system_backdrop = "Tabbed"
 config.win32_system_backdrop = "Mica"
@@ -70,7 +70,7 @@ config.window_padding = {
 
 config.window_frame = {
 	font = wezterm.font({ family = "Maple Mono NF", weight = "Bold" }),
-	font_size = { { .fontSize } },
+	font_size = 12,
 	active_titlebar_bg = "#333333",
 	inactive_titlebar_bg = "#333333",
 	border_left_width = "0.5cell",
