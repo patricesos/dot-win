@@ -1,77 +1,111 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; $Doomdir/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
-(setq user-full-name "Patrice G. Sossou"
+;; User
+(setq user-full-name "Patrice Gnimdou"
       user-mail-address "patricesos7@gmail.com")
 
+;; Load custom lisp files
+(load! "keymap.el")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom:
-;;
-;; - `doom-font' -- the primary font to use
-;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
-;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
-;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
-;;
-;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
-(setq doom-font (font-spec :family "Maple Mono NF" :size 20 :weight 'regular)
-     doom-variable-pitch-font (font-spec :family "Bitter" :size 16))
+;; Font settings
+(setq doom-font (font-spec :family "Maple Mono NF" :size 16)
+      doom-variable-pitch-font (font-spec :family "Maple Mono NF" :size 13)
+      doom-big-font (font-spec :family "Maple Mono NF" :size 20)
+      ;; doom-symbol-font(font-spec :family "")
+      ;; doom-serif-font (font-spec :family "" :size 18)
+      )
 
-;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
-;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
-;; refresh your font settings. If Emacs still can't find your font, it likely
-;; wasn't installed correctly. Font issues are rarely Doom issues!
+;; Disable paren highlight
+(show-paren-mode t)
+(menu-bar-mode 1)
+(tab-bar-mode 1)
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; Highlight tabulations
+(setq-default highlight-tabs t)
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+;; Show trailing white spaces
+(setq-default show-trailing-whitespace t)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-;; (setq org-directory "~/org/")
-(setq org-directory "E:/_VAULTS/org/")
+;; Remove useless whitespace before saving a file
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+
+;; Enable wraping
+(setq-default word-wrap t)
+(global-visual-line-mode t)
+(visual-line-mode t)
+
+;; Line display
+(setq display-line-numbers-type 'visual)
+(setq-default display-line-numbers-width 3)
+(setq-default display-line-numbers-widen t)
+(setq highlight-nonselected-windows nil)
+
+;; Minibuffer settings
+(setq max-mini-window-height 2.0)
+(setq resize-mini-windows nil)
+
+;; Emacs frame settings
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (add-hook 'window-setup-hook 'toggle-frame-maximized t)
+
+;; Theme settings and look
+(setq doom-theme 'doom-molokai) ;; doom-molokai doom-material doom-peacock
+(setq fancy-splash-image (file-name-concat doom-user-dir "assets/hole.png"))
+;; (setq +dashboard-functions '(+dashboard-widget-banner))
+(setq custom-safe-themes t)
+;; (add-to-list 'custom-theme-load-path "~/.config/doom/themes/")
+;; (load-theme 'zenburn)
+
+;; Org-mode
+(setq org-directory "~/org/")
+(add-hook 'org-mode-hook #'org-modern-mode)
+;; (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+;; (with-eval-after-load 'org (global-org-modern-mode))
+
+;; projectile
+(setq projectile-project-search-path '("~/code"))
+(setq projectile-cleanup-known-projects nil)
+
+;; https://www.alcarney.me/blog/2024/local-llms-with-ollama-and-gptel/
+;;
+;; (setq gptel-model 'qwen3.5:4b
+;;       gptel-backend (gptel-make-ollama "Ollama"
+;;                       :host "192.168.1.66:11434"
+;;                       :stream t
+;;                       :models '(qwen3.5:4b)))
+
+(use-package eglot
+  :hook ((sh-mode . eglot-ensure)        ; For standard shell mode
+         (bash-ts-mode . eglot-ensure))) ; For tree-sitter bash mode
+
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (elpy-enable))
+
+;; (add-hook 'python-mode-hook 'elpy-mode)
 
 
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `with-eval-after-load' block, otherwise Doom's defaults may override your
-;; settings. E.g.
+;; (add-to-list 'load-path (expand-file-name "/path/to/origami.el/"))
+;; (require 'origami)
+(load! "packages/siege-mode.el")
+;; (require 'siege-mode )
+
+
+;; (use-package pdf-view-restore
+;;   :after pdf-tools
+;;   :config
+;;   (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
+;; (setq pdf-view-restore-filename "~/.pdf-view-restore")
 ;;
-;;   (with-eval-after-load 'PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look them up).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 18)))
+
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . elpy-mode))

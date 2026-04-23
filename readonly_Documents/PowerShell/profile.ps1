@@ -3,7 +3,19 @@ if (!(Test-Path -Path $PROFILE)) {
 }
 
 function emacs {
-  emacsclient -c -n -a "" $args
+  emacsclient -nca "" $args
+}
+
+function doom {
+    ~/.config/emacs/bin/doom.ps1 @args
+}
+
+function doom-readd { chezmoi add ~/.config/doom/ }
+
+function install-doom {
+    scoop install emacs
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+    ~/.config/emacs/bin/doom.ps1 install
 }
 
 New-Alias vi nvim
