@@ -65,6 +65,10 @@ function insta {
     yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $args --cookies-from-browser firefox -t mp4
 }
 
+function yt-dlp {
+    yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $args -t mp4
+}
+
 function video {
     yt-dlp -o $env:userprofile/downloads/video/"%(title)s.%(ext)s" -f "ba+bv" $args -t mp4
 }
@@ -93,7 +97,6 @@ function ce { nvim ~/.local/share/chezmoi/}
 function cu { chezmoi update }
 function ca { chezmoi -v apply }
 function ccd { chezmoi cd }
-
 
 # Docker
 function DockerComposeUp { docker compose up -d }

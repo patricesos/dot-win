@@ -19,8 +19,8 @@ if vim.g.neovide then
   vim.g.neovide_cursor_vfx_mode = "torpedo"
   vim.g.neovide_cursor_vfx_particle_density = 1.0
   vim.g.neovide_show_border = false
-  vim.g.neovide_theme = "monokai"
-  vim.g.neovide_title_text_color = "white"
+  vim.g.neovide_theme = "light"
+  vim.g.neovide_title_text_color = "black"
   vim.g.neovide_hide_mouse_when_typing = true
 
   vim.g.neovide_padding_top = 20
